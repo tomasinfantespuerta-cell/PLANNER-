@@ -1,5 +1,7 @@
 # Mi planner
 
+**Enlace:** https://planner-gkkd.vercel.app (Vercel despliega la rama `main`)
+
 App (PWA instalable) que junta en un sitio el día a día de Tomás:
 
 | Pestaña | Qué tiene |
