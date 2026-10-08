@@ -1,9 +1,12 @@
 import type { Fila, Mes } from './db'
 
-/** Datos traídos de «Cuentas Claras» (8-oct-2026). Se cargan una sola vez. */
+/**
+ * Datos traídos de «Cuentas Claras» (8-oct-2026). Se cargan una sola vez.
+ * Lo que estaba apuntado en septiembre pasa a octubre (petición de Tomás); septiembre queda vacío.
+ */
 export const MESES_IMPORTADOS: Mes[] = [
  {
-  "key": "2026-09",
+  "key": "2026-10",
   "gastosFijos": [
    {
     "concepto": "hipoteca ",
@@ -152,7 +155,7 @@ export const MESES_IMPORTADOS: Mes[] = [
   ]
  },
  {
-  "key": "2026-10",
+  "key": "2026-09",
   "gastosFijos": [],
   "gastosVariables": [],
   "ingresos": []
