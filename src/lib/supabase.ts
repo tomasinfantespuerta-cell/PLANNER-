@@ -8,8 +8,46 @@ function limpiarUrl(raw: string | undefined): string | undefined {
   return u.replace(/\/(rest\/v1\/?)?$/, '').replace(/\/+$/, '')
 }
 
-const url = limpiarUrl(import.meta.env.VITE_SUPABASE_URL as string | undefined)
 const anonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)?.trim().replace(/^["']|["']$/g, '')
+
+/** Las claves antiguas (eyJ…) llevan dentro el identificador del proyecto de Supabase. */
+function refDeLaClave(key: string | undefined): string | null {
+  try {
+    const payload = key?.split('.')[1]
+    if (!payload) return null
+    const json = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/'))) as { ref?: unknown }
+    return typeof json.ref === 'string' && /^[a-z0-9]{10,40}$/.test(json.ref) ? json.ref : null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Dirección del servidor. Si la de Vercel no es la de un proyecto de Supabase
+ * (p. ej. se pegó la del panel, supabase.com/dashboard/...), se usa la que va dentro de la clave.
+ */
+function elegirUrl(): string | undefined {
+  const dada = limpiarUrl(import.meta.env.VITE_SUPABASE_URL as string | undefined)
+  const ref = refDeLaClave(anonKey)
+  if (!ref) return dada
+  const buena = `https://${ref}.supabase.co`
+  try {
+    const host = dada ? new URL(dada).hostname : ''
+    if (host === `${ref}.supabase.co` || (host && !host.endsWith('supabase.co') && !host.endsWith('supabase.com'))) return dada
+  } catch {
+    /* URL inválida: usamos la de la clave */
+  }
+  return buena
+}
+
+const url = elegirUrl()
+export const SUPABASE_HOST = (() => {
+  try {
+    return url ? new URL(url).hostname : ''
+  } catch {
+    return url ?? ''
+  }
+})()
 
 export const DEMO_MODE = import.meta.env.VITE_DEMO === '1'
 

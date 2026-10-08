@@ -1,4 +1,4 @@
-import { DEMO_MODE, supabase } from '../lib/supabase'
+import { DEMO_MODE, SUPABASE_HOST, supabase } from '../lib/supabase'
 
 export interface Household {
   id: string
@@ -32,7 +32,10 @@ function explain(err: unknown): Error {
   if (/anonymous/i.test(e?.message ?? '')) {
     return new Error('Falta activar el acceso anónimo en Supabase (Authentication → Sign In / Providers).')
   }
-  if (/fetch|network/i.test(e?.message ?? '')) return new Error('No hay conexión. Inténtalo cuando tengas internet.')
+  if (/fetch|network/i.test(e?.message ?? '')) {
+    if (navigator.onLine === false) return new Error('No hay conexión. Inténtalo cuando tengas internet.')
+    return new Error(`No se puede conectar con el servidor de la comida (${SUPABASE_HOST || 'sin dirección'}). Revisa VITE_SUPABASE_URL en Vercel.`)
+  }
   return new Error(e?.message || 'Algo ha fallado. Inténtalo de nuevo.')
 }
 
