@@ -12,7 +12,7 @@ import { SettingsPage } from './features/settings/SettingsPage'
 import { ShoppingPage } from './features/shopping/ShoppingPage'
 import { clearHousehold, loadHousehold, saveHousehold, type Household } from './household/session'
 import { WelcomePage } from './household/WelcomePage'
-import { DEMO_MODE, SUPABASE_CONFIGURED } from './lib/supabase'
+import { DEMO_MODE, SUPABASE_CONFIGURED, SUPABASE_ERROR } from './lib/supabase'
 import { AjustesPlanner } from './planner/AjustesPlanner'
 import { DineroPage } from './planner/DineroPage'
 import { HoyPage } from './planner/HoyPage'
@@ -298,6 +298,7 @@ function ConfigMissing() {
         Añade <code>VITE_SUPABASE_URL</code> y <code>VITE_SUPABASE_ANON_KEY</code> (las mismas que la app de comida) en las variables de entorno de Vercel y vuelve a
         desplegar.
       </p>
+      {SUPABASE_ERROR && <p className="rounded-2xl bg-aviso-claro p-3 text-left text-base break-words text-aviso">Error: {SUPABASE_ERROR}</p>}
     </div>
   )
 }
