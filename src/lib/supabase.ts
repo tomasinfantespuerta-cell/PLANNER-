@@ -2,13 +2,14 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
 /** Limpia la URL por si se pegó con espacios, sin https:// o con /rest/v1 al final. */
 function limpiarUrl(raw: string | undefined): string | undefined {
-  let u = raw?.trim().replace(/^["']|["']$/g, '')
+  let u = raw?.replace(/[\s"']+/g, '')
   if (!u) return undefined
   if (!/^https?:\/\//i.test(u)) u = `https://${u}`
   return u.replace(/\/(rest\/v1\/?)?$/, '').replace(/\/+$/, '')
 }
 
-const anonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)?.trim().replace(/^["']|["']$/g, '')
+// Las claves nunca llevan espacios ni saltos de línea: si se colaron al pegarla, fuera.
+const anonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)?.replace(/[\s"']+/g, '') || undefined
 
 /** Las claves antiguas (eyJ…) llevan dentro el identificador del proyecto de Supabase. */
 function refDeLaClave(key: string | undefined): string | null {

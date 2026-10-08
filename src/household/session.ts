@@ -34,7 +34,7 @@ function explain(err: unknown): Error {
   }
   if (/fetch|network/i.test(e?.message ?? '')) {
     if (navigator.onLine === false) return new Error('No hay conexión. Inténtalo cuando tengas internet.')
-    return new Error(`No se puede conectar con el servidor de la comida (${SUPABASE_HOST || 'sin dirección'}). Revisa VITE_SUPABASE_URL en Vercel.`)
+    return new Error(`No se puede conectar con el servidor de la comida (${SUPABASE_HOST || 'sin dirección'}). Detalle: ${e?.message}`)
   }
   return new Error(e?.message || 'Algo ha fallado. Inténtalo de nuevo.')
 }
