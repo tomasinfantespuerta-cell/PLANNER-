@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  /* Paleta pastel del planner: beige de fondo, azul clarito de acento, amarillo pastel */
+  --color-crema: #faf6ee;
+  --color-crema-oscuro: #f0e8d8;
+  --color-terra: #3f6fa1;
+  --color-terra-oscuro: #2d5683;
+  --color-terra-claro: #dce9f6;
+  --color-tinta: #2a2f3a;
+  --color-gris: #676c76;
+  --color-borde: #e6ddcc;
+  --color-oliva: #4c7a46;
+  --color-oliva-claro: #e1efdb;
+  --color-aviso: #866400;
+  --color-aviso-claro: #fdf1c0;
+  --color-amarillo: #fbeeb0;
+  --color-amarillo-claro: #fef8dc;
+  --color-rosa-claro: #fbe3e3;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Letra grande en toda la app: 1rem = 18px */
+html {
+  font-size: 112.5%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--color-crema);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+  overscroll-behavior-y: none;
+  overflow-x: hidden;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-terra);
+  outline-offset: 2px;
+}
+
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+.pt-safe { padding-top: env(safe-area-inset-top); }
+
+@keyframes subir {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animar-subir { animation: subir 180ms ease-out; }
