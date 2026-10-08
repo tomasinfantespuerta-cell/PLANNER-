@@ -24,21 +24,13 @@ function refDeLaClave(key: string | undefined): string | null {
 }
 
 /**
- * Dirección del servidor. Si la de Vercel no es la de un proyecto de Supabase
- * (p. ej. se pegó la del panel, supabase.com/dashboard/...), se usa la que va dentro de la clave.
+ * Dirección del servidor. Si la clave lleva dentro el proyecto, manda la clave:
+ * así da igual que VITE_SUPABASE_URL se haya guardado mal en Vercel.
  */
 function elegirUrl(): string | undefined {
-  const dada = limpiarUrl(import.meta.env.VITE_SUPABASE_URL as string | undefined)
   const ref = refDeLaClave(anonKey)
-  if (!ref) return dada
-  const buena = `https://${ref}.supabase.co`
-  try {
-    const host = dada ? new URL(dada).hostname : ''
-    if (host === `${ref}.supabase.co` || (host && !host.endsWith('supabase.co') && !host.endsWith('supabase.com'))) return dada
-  } catch {
-    /* URL inválida: usamos la de la clave */
-  }
-  return buena
+  if (ref) return `https://${ref}.supabase.co`
+  return limpiarUrl(import.meta.env.VITE_SUPABASE_URL as string | undefined)
 }
 
 const url = elegirUrl()
